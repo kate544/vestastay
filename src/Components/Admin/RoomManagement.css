@@ -1,0 +1,155 @@
+.room-management {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-room-btn {
+  background-color: #003580;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.room-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.room-table th, 
+.room-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+  width: 1%; /* Forces columns to fit content */
+}
+
+.room-thumb {
+  width: 60px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.no-image-placeholder {
+  width: 60px;
+  height: 40px;
+  background: #f0f0f0;
+  color: #999;
+  font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.status-pill {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-pill.available { background: #e6f4ea; color: #1e7e34; }
+.status-pill.cleaning { background: #fff4e5; color: #b7791f; }
+.status-pill.dirty { background: #feecef; color: #d93025; }
+
+/* Buttons */
+.status-toggle-btn { 
+  color: #003580; 
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  margin-right: 10px; 
+  font-weight: 600; 
+}
+
+/* NEW EDIT COLOR: Amber/Orange for Admin Edit */
+.admin-edit-btn { 
+  color: #f39c12; 
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  margin-right: 10px; 
+  font-weight: 600; 
+}
+.admin-edit-btn:hover { text-decoration: underline; }
+
+.delete-btn { color: #d93025; background: none; border: none; cursor: pointer; font-weight: 600; }
+.delete-btn:hover { text-decoration: underline; }
+
+.mark-clean-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 450px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
+}
+
+.img-preview {
+  width: 100px;
+  height: 60px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.save-btn { background: #003580; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+.cancel-btn { background: #f8f9fa; color: #333; border: 1px solid #ddd; padding: 10px 20px; border-radius: 6px; cursor: pointer; }

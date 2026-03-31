@@ -1,0 +1,205 @@
+/* --- Hero Visual Area --- */
+.hero {
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: 80px; 
+}
+
+.overlay {
+  background: rgba(49, 40, 40, 0.55);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8%;
+}
+
+.hero-content {
+  color: white;
+  max-width: 900px;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* --- Shimmer Effect for Text --- */
+.hero-content h4,
+.hero-content h1,
+.hero-content p {
+  font-weight: bold;
+  background: linear-gradient(
+    270deg,
+    #ffffff,
+    #ff8c00,
+    #ffffff,
+    #ffc107,
+    #ffffff
+  );
+  background-size: 800% 800%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: glow-shimmer 10s ease infinite;
+}
+
+.hero-content h4 { font-size: 1.7rem; }
+.hero-content h1 { font-size: 2.8rem; margin: 1rem 0; }
+.hero-content p { font-size: 1.1rem; margin-bottom: 2rem; -webkit-text-fill-color: white; color: white; /* Made P slightly more readable */}
+
+@keyframes glow-shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* --- Search Box --- */
+.search-box {
+  background: white;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.search-box input, 
+.search-box select {
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  flex: 1;
+  min-width: 150px;
+  outline: none;
+  font-family: inherit;
+}
+
+.search-box button {
+  background-color: black;
+  color: white;
+  padding: 0.7rem 2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.search-box button:hover {
+  background-color: #f4b400;
+  color: black;
+}
+
+/* --- Integrated About Section --- */
+.hero-about {
+  padding: 100px 10%;
+  background-color: #ffffff;
+  color: #333;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.about-label {
+  color: #d4af37;
+  letter-spacing: 2px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.about-info h2 {
+  font-size: 2.8rem;
+  margin: 15px 0;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+.about-info p {
+  line-height: 1.8;
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 1.05rem;
+}
+
+.about-stats {
+  display: flex;
+  gap: 40px;
+}
+
+.stat-item h3 {
+  font-size: 2.2rem;
+  margin-bottom: 5px;
+  color: #d4af37;
+}
+
+.stat-item p {
+  font-size: 0.85rem;
+  margin: 0;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.about-feature {
+  background: #fdfdfd;
+  padding: 50px;
+  border-left: 5px solid #d4af37;
+  border-radius: 8px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+}
+
+.quote-box p {
+  font-style: italic;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: #222;
+}
+
+/* --- Responsive Media Queries --- */
+
+/* Tablet (1024px) */
+@media (max-width: 1024px) {
+  .hero { height: 80vh; padding: 80px 4% 0; }
+  .hero-content h1 { font-size: 2.2rem; }
+  .about-container { gap: 30px; }
+}
+
+/* Mobile (900px and below for About section) */
+@media (max-width: 900px) {
+  .about-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .about-stats { justify-content: center; }
+  .about-feature { margin-top: 20px; }
+}
+
+/* Mobile (768px and below for Hero) */
+@media (max-width: 768px) {
+  .hero { height: auto; min-height: 80vh; padding: 100px 1rem 3rem; }
+  .hero-content h1 { font-size: 1.8rem; }
+  .search-box { flex-direction: column; width: 100%; }
+  .search-box input, .search-box select, .search-box button { width: 100%; }
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+  .hero-content h1 { font-size: 1.6rem; }
+  .hero-about { padding: 60px 5%; }
+  .about-info h2 { font-size: 2rem; }
+}

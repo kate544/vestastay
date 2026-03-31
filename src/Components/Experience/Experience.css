@@ -1,0 +1,64 @@
+.experience-section {
+  padding: 4rem 10%;
+  background-color: #f9f9f9; /* Light grey to separate from the white hotel section */
+}
+
+/* Dark Mode adjustment */
+body.dark-mode .experience-section {
+  background-color: #022C22;
+}
+
+.experience-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.experience-text {
+  text-align: center;
+  max-width: 600px;
+}
+
+.sub-gold {
+  color: #D4AF37;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+.exp-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.exp-card:hover {
+  transform: translateY(-5px);
+  border-bottom: 3px solid #1e3a8a; /* Royal blue accent on hover light mode */
+}
+
+.exp-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+body.dark-mode .exp-card {
+  background: #064E3B;
+  color: white;
+}
+
+body.dark-mode .exp-card:hover {
+transform: translateY(-5px);
+  border-bottom: 3px solid #D4AF37; 
+}

@@ -1,0 +1,210 @@
+.featured-section {
+padding: 2rem 10% 5rem;
+  background: #fff; /* White in light mode, emerald in dark mode */
+  text-align: center;
+}
+
+.section-header .sub-title {
+  color: #D4AF37;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.2rem
+}
+
+.section-header .main-title {
+  font-size: 2.5rem;
+  color: #1e3a8a; /* Royal Blue */
+  margin-bottom: 0.5rem;
+}
+
+.hotel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.hotel-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.hotel-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(30, 58, 138, 0.4); 
+  border: 3px solid #1e3a8a; /*In light mode*/
+}
+
+.image-container {
+  position: relative;
+  height: 200px;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.price-tag {
+  position: absolute;
+  cursor: pointer;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 5px 12px;
+  border-radius: 50px;
+  font-weight: bold;
+  color: #1e3a8a;
+  backdrop-filter: blur(5px);
+}
+
+.hotel-details {
+  padding: 15px;
+  text-align: center; 
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  cursor: pointer;
+}
+
+.hotel-info {
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.hotel-info h3 {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.location {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.book-btn {
+  padding: 10px 25px;      
+  background: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 8px;     
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.book-btn:hover {
+  background: #D4AF37;
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+.hotel-beds {
+  color: #666;
+  font-size: 0.85rem;
+  margin: 5px 0;
+}
+
+.star {
+  color: #ffb400; /* Gold color for stars */
+  font-size: 1rem;
+}
+
+.hotel-price b {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: center; /* Centers buttons horizontally */
+  align-items: center;     /* Aligns buttons vertically */
+  gap: 15px;               /* Space between the two buttons */
+  margin-top: 20px;
+  width: 100%;             /* Ensures it spans the card width */
+}
+
+.view-details-btn {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px 20px;      /* Increased padding*/
+  border-radius: 8px;      /* Round for a modern look */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-details-btn:hover {
+  background: #1e3a8a;
+  border-color: #f4b400;
+  color: white;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 15px 0;
+  padding: 10px;
+  background: #f8fafc; /* Light professional grey */
+  border-radius: 6px;
+}
+
+.status-dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.available {
+  background-color: #22c55e; /* Vibrant Green */
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+}
+
+.unavailable {
+  background-color: #ef4444; /* Alert Red */
+}
+
+.status-text {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.view-more {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 1px;
+}
+
+.view-more button {
+  background: black;
+  color: white;
+  border: 1.5px solid #ccc;
+  padding: 0.9rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.view-more button:hover {
+    border: 3px solid #1e3a8a;
+  color: white;
+  background: #f4b400;
+  transform: translateY(-2px);
+}
+
+/* DARK MODE */
+body.dark-mode .featured-section { background: #064E3B; }
+body.dark-mode .section-header .main-title { color: #fff; }
+body.dark-mode .hotel-card { background: #022C22; border: 1px solid rgba(212, 175, 55, 0.2); }
+body.dark-mode .hotel-card:hover {border:3px solid #D4AF37;}
+body.dark-mode .hotel-info h3 { color: #fff; }
+body.dark-mode .view-more button:hover { background: #1e3a8a; border: 3px solid #fff;}
+body.dark-mode .view-details-btn:hover { background: #f4b400; border-color: #1e3a8a; color: white;}
