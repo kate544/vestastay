@@ -18,6 +18,10 @@ const App = () => {
   const [paymentMethod, setPaymentMethod] = useState('M-Pesa'); 
   const [bookings, setBookings] = useState([]);
   
+  // State for room search and highlighting
+  const [filteredRooms, setFilteredRooms] = useState(null);
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
+  
   const [rooms, setRooms] = useState([
     { id: 1, name: 'Executive Room', price: 10000, status: 'Available', type: 'King Bed' },
     { id: 2, name: 'Deluxe Room', price: 20000, status: 'Sold Out', type: 'King Bed' },
@@ -46,6 +50,15 @@ const App = () => {
   const handleLogout = () => {
     setRole(null);
     setIsPaymentOpen(false);
+    // Reset search states on logout
+    setFilteredRooms(null);
+    setSelectedRoomId(null);
+  };
+
+  // Clear search function
+  const handleClearSearch = () => {
+    setFilteredRooms(null);
+    setSelectedRoomId(null);
   };
 
   // FIXED: Now correctly maps reference to id for the backend
@@ -110,8 +123,17 @@ const App = () => {
   return (
     <div className="guest-site">
       <Navbar/>
-      <Hero/>
-      <FeaturedHotel onBook={() => setIsPaymentOpen(true)}/>
+      <Hero 
+        setFilteredRooms={setFilteredRooms}
+        setSelectedRoomId={setSelectedRoomId}
+      />
+      <FeaturedHotel 
+        filteredRooms={filteredRooms}
+        selectedRoomId={selectedRoomId}
+        setSelectedRoomId={setSelectedRoomId}
+        onClearSearch={handleClearSearch}
+        onBook={() => setIsPaymentOpen(true)}
+      />
       <Experience/>
       <Testimonials/>
       <Newsletter/>

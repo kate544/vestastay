@@ -4,16 +4,16 @@ import './Testimonials.css';
 const testimonials = [
   {
     id: 1,
-    name: "Emma Rodriguez",
-    location: "Barcelona, Spain",
+    name: "Zawadi Imani",
+    location: "Kenya, Nairobi",
     stars: "⭐⭐⭐⭐⭐",
     text: "I've used many booking platforms before, but none compare to the personalized experience and attention to detail that VestaStay provides.",
     img: "https://i.pravatar.cc/150?u=emma"
   },
   {
     id: 2,
-    name: "David Kim",
-    location: "Seoul, South Korea",
+    name: "David Samson",
+    location: "Nigeria, Lagos",
     stars: "⭐⭐⭐⭐⭐",
     text: "VestaStay exceeded my expectations. From the luxurious rooms to the world-class service, it was a truly unforgettable stay.",
     img: "https://i.pravatar.cc/150?u=david"
@@ -21,7 +21,7 @@ const testimonials = [
   {
     id: 3,
     name: "Sophia Johnson",
-    location: "New York, USA",
+    location: "Kenya,Kisumu", 
     stars: "⭐⭐⭐⭐⭐",
     text: "The offers made it easy to plan my trip affordably without compromising on luxury. Highly recommended for discerning travelers!",
     img: "https://i.pravatar.cc/150?u=sophia"

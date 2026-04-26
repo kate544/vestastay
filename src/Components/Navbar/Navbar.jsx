@@ -9,6 +9,14 @@ function Navbar() {
     document.body.classList.toggle("dark-mode", darkMode);
   }, [darkMode]);
 
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to log out of VestaStay?")) {
+      // Add your logout logic here (e.g., localStorage.clear())
+      console.log("Logged out");
+      window.location.reload(); 
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="logo">VestaStay</div>
@@ -25,11 +33,15 @@ function Navbar() {
         <button
           className="theme-toggle"
           onClick={() => setDarkMode(!darkMode)}
+          title="Toggle Theme"
         >
           {darkMode ? "☀️" : "🌙"}
         </button>
 
-        {/* Search and Login buttons removed */}
+        {/* Logout Button - Desktop */}
+        <button className="logout-btn desktop-only" onClick={handleLogout}>
+          Logout
+        </button>
 
         {/* Hamburger (only mobile) */}
         <button
@@ -48,6 +60,12 @@ function Navbar() {
           <li><a href="#hotels" onClick={() => setMenuOpen(false)}>Hotels</a></li>
           <li><a href="#experience" onClick={() => setMenuOpen(false)}>Experience</a></li>
           <li><a href="#about" onClick={() => setMenuOpen(false)}>About</a></li>
+          <hr style={{ border: "0.5px solid #333", width: "100%", margin: "10px 0" }} />
+          <li>
+            <button className="logout-btn-mobile" onClick={handleLogout}>
+              Logout
+            </button>
+          </li>
         </ul>
       </div>
     </nav>

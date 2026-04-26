@@ -7,8 +7,7 @@ require('dotenv').config();
 const app = express();
 app.use(cors()); 
 
-// Increased limit to handle Base64 room images
-app.use(express.json({ limit: '100mb' }));
+app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 
 // --- GMAIL NOTIFICATION CONFIGURATION ---
@@ -47,6 +46,7 @@ const bookingSchema = new mongoose.Schema({
   room: String,
   amount: Number,
   date: String,
+  numofGuests: Number,
   status: { type: String, default: 'Confirmed' },
   method: { type: String, default: 'Card' },
   reference: String 
@@ -57,11 +57,12 @@ const Booking = mongoose.model('Booking', bookingSchema);
 // --- ROOM SCHEMA & MODEL ---
 const roomSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  location: { type: String, required: true, default: 'Nairobi' }, // Added Location field
+  location: { type: String, required: true },
   type: { type: String, required: true },
   price: { type: Number, required: true },
-  quantity: { type: Number, default: 1 },
-  details: { type: String, default: "Free Wifi • Breakfast & Dinner Included" },
+  numofGuests: {type:Number, required: true},
+  quantity: { type: Number, default: 1 }, // Added quantity
+  details: { type: String, default: "Free Wifi • Breakfast & Dinner Included" }, 
   image: String, 
   status: { type: String, default: 'Available' }
 }, { timestamps: true });
@@ -84,7 +85,7 @@ app.post('/api/bookings', async (req, res) => {
     const numericAmount = typeof amount === 'string' ? Number(amount.replace(/[^0-9.-]+/g, "")) : amount;
 
     const newBooking = new Booking({
-      id: `VS-${Date.now()}`, 
+      id: id || reference || `VST-${Math.floor(1000 + Math.random() * 9000)}`, 
       guest, email, phone, room: room || "Vesta Panari", 
       amount: numericAmount,
       date: date || new Date().toLocaleDateString(), 
@@ -168,7 +169,7 @@ const updateRoom = async (req, res) => {
 
     if (!roomRecord) return res.status(404).json({ message: "Room not found" });
     
-    console.log(`🏠 Room Update: ${roomRecord.name} in ${roomRecord.location} (Qty: ${roomRecord.quantity}) is ${roomRecord.status}`);
+    console.log(`🏠 Room Update: ${roomRecord.name} (Qty: ${roomRecord.quantity}) is ${roomRecord.status}`);
     res.json(roomRecord);
   } catch (err) {
     res.status(400).json({ message: "Invalid update data", error: err.message });
@@ -177,11 +178,21 @@ const updateRoom = async (req, res) => {
 
 app.patch('/api/rooms/:id', updateRoom);
 app.put('/api/rooms/:id', updateRoom);
-
+// In your backend, add this temporary route to fix existing rooms
+app.put('/api/rooms/fix-location/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { location } = req.body;
+    const room = await Room.findByIdAndUpdate(id, { location }, { new: true });
+    res.json(room);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 app.post('/api/rooms', async (req, res) => {
   try {
-    const roomData = req.body;
     // If adding a room with 0 quantity, set status to Sold Out automatically
+    const roomData = req.body;
     if (roomData.quantity <= 0) roomData.status = 'Sold Out';
 
     const newRoom = new Room(roomData);

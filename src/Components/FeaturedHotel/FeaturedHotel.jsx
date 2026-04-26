@@ -1,43 +1,77 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect, useRef } from 'react'; 
 import axios from 'axios';
 import './FeaturedHotel.css';
 import BookNowModal from '../BookNowModal/BookNowModal';
 
-const FeaturedHotel = () => {
+const FeaturedHotel = ({ filteredRooms, selectedRoomId, setSelectedRoomId, onClearSearch }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState(null);
   const [viewOnly, setViewOnly] = useState(false); 
   const [hotelsData, setHotelsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const roomRefs = useRef({});
 
   // Fetch real-time room data from the database
   useEffect(() => {
     const fetchRooms = async () => {
       try {
         const response = await axios.get("http://localhost:7000/api/rooms");
-        // Map database fields to the component's expected format
         const formattedRooms = response.data.map(room => ({
-          id: room._id, // Use MongoDB _id
+          id: room._id,
           name: room.name,
           type: room.type,
-          price: room.price.toLocaleString(), // Format price with commas
+          location: room.location,
+          price: room.price.toLocaleString(),
           available: room.status === "Available",
-          // Fallback if no image is provided in DB
           img: room.image || "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg",
           beds: room.type === "Executive Room" 
             ? "Living Area • All meals • Free Wifi • Swimming Pool" 
-            : " Free Wifi • Breakfast & Dinner Included"
+            : "Free Wifi • Breakfast & Dinner Included"
         }));
         setHotelsData(formattedRooms);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching rooms for Featured section:", error);
+        console.error("Error fetching rooms:", error);
         setLoading(false);
       }
     };
 
     fetchRooms();
   }, []);
+
+  // Handle highlighting and scrolling when a room is selected
+  useEffect(() => {
+    if (selectedRoomId && roomRefs.current[selectedRoomId]) {
+      // Scroll to the room
+      roomRefs.current[selectedRoomId].scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+      });
+      
+      // Remove highlight after 3 seconds
+      const timer = setTimeout(() => {
+        if (setSelectedRoomId) setSelectedRoomId(null);
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [selectedRoomId, setSelectedRoomId]);
+
+  // Determine which rooms to display
+  const displayRooms = filteredRooms && filteredRooms.length > 0 
+    ? filteredRooms.map(room => ({
+        id: room._id,
+        name: room.name,
+        type: room.type,
+        location: room.location,
+        price: room.price.toLocaleString(),
+        available: room.status === "Available",
+        img: room.image || "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg",
+        beds: room.type === "Executive Room" 
+          ? "Living Area • All meals • Free Wifi • Swimming Pool" 
+          : "Free Wifi • Breakfast & Dinner Included"
+      }))
+    : hotelsData;
 
   const handleViewDetails = (hotel) => {
     setSelectedHotel(hotel);
@@ -51,7 +85,6 @@ const FeaturedHotel = () => {
     setIsModalOpen(true);
   };
 
-  // Note: Booking confirmation logic should ideally update the backend status
   const completeBooking = (hotelId) => {
     setHotelsData(prevHotels => 
       prevHotels.map(item => {
@@ -70,11 +103,28 @@ const FeaturedHotel = () => {
       <div className="section-header">
         <h4 className="sub-title">EXPLORE OUR PROPERTIES</h4>
         <h2 className="main-title">Our Featured Hotels</h2>
+        {filteredRooms && filteredRooms.length > 0 && (
+          <p className="search-results-count">
+            Found {filteredRooms.length} room(s)
+            {onClearSearch && (
+              <button 
+                className="clear-search-btn"
+                onClick={onClearSearch}
+              >
+                Clear Search
+              </button>
+            )}
+          </p>
+        )}
       </div>
 
       <div className="hotel-grid">
-        {hotelsData.map((hotel) => (
-          <div key={hotel.id} className="hotel-card">
+        {displayRooms.map((hotel) => (
+          <div 
+            key={hotel.id} 
+            ref={el => roomRefs.current[hotel.id] = el}
+            className={`hotel-card ${selectedRoomId === hotel.id ? 'highlight-glow' : ''}`}
+          >
             <div className="image-container">
               <img src={hotel.img} alt={hotel.name} className="hotel-img" />
               <span className="price-tag">Ksh {hotel.price} / night</span>
@@ -82,6 +132,7 @@ const FeaturedHotel = () => {
 
             <div className="hotel-details">
               <h3 className="hotel-name">{hotel.name}</h3>
+              <p className="hotel-location">📍 {hotel.location || "Location not specified"}</p>
               <p className="hotel-type" style={{color: '#888', fontSize: '0.9rem'}}>{hotel.type}</p>
               <p className="hotel-beds">{hotel.beds}</p>
               
@@ -99,6 +150,20 @@ const FeaturedHotel = () => {
           </div>
         ))}
       </div>
+
+      {displayRooms.length === 0 && (
+        <div className="no-results">
+          <p>No rooms found matching your search criteria.</p>
+          {onClearSearch && (
+            <button 
+              className="clear-search-btn"
+              onClick={onClearSearch}
+            >
+              Show All Rooms
+            </button>
+          )}
+        </div>
+      )}
 
       {isModalOpen && (
         <BookNowModal 

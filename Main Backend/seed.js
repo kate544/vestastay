@@ -5,7 +5,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("🌱 Seed Connection Successful!"))
   .catch(err => console.error("❌ Seed Connection Error:", err));
 
-// Updated Schema to match your server.js and MongoDB Compass data
+// An updated Schema matches server.js and MongoDB Compass data
 const bookingSchema = new mongoose.Schema({
   id: String,
   guest: { type: String, required: true },
@@ -15,7 +15,7 @@ const bookingSchema = new mongoose.Schema({
   date: String,
   status: { type: String, default: 'Confirmed' },
   method: { type: String, default: 'Not Specified' },
-  reference: String // Crucial for Paystack/M-Pesa tracking
+  reference: String // for Paystack/M-Pesa tracking
 }, { timestamps: true });
 
 const Booking = mongoose.model('Booking', bookingSchema);
@@ -47,7 +47,6 @@ const initialBookings = [
 
 const seedDB = async () => {
   try {
-    // 1. Check if these specific IDs already exist before inserting
     // This prevents duplicates while KEEPING your new app bookings
     for (const item of initialBookings) {
       await Booking.updateOne(

@@ -199,7 +199,82 @@ padding: 2rem 10% 5rem;
   background: #f4b400;
   transform: translateY(-2px);
 }
+/* Add this to your FeaturedHotel.css */
 
+.hotel-card {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.hotel-card.highlight-glow {
+  animation: glowPulse 0.5s ease-in-out 3;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+  border: 2px solid gold;
+  transform: scale(1.02);
+  background: linear-gradient(135deg, #fff8e7, #ffffff);
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+    border-color: rgba(255, 215, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px 10px rgba(255, 215, 0, 0.8);
+    border-color: rgba(255, 215, 0, 1);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+    border-color: rgba(255, 215, 0, 0.5);
+  }
+}
+
+.clear-search-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 20px;
+  margin-left: 15px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.clear-search-btn:hover {
+  background: #5a6268;
+}
+
+.search-results-count {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 16px;
+  color: #28a745;
+  font-weight: 500;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.no-results p {
+  font-size: 18px;
+  color: #dc3545;
+  margin-bottom: 15px;
+}
+
+.hotel-location {
+  color: #6c757d;
+  font-size: 14px;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 /* DARK MODE */
 body.dark-mode .featured-section { background: #064E3B; }
 body.dark-mode .section-header .main-title { color: #fff; }

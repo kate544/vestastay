@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import "./Hero.css";
 import bgImage from "../../Assets/VestaStay-img-2.jpeg";
 
-function Hero({ setFilteredRooms }) {
+function Hero({ setFilteredRooms, setSelectedRoomId }) {  
   const [allRooms, setAllRooms] = useState([]);
   const [locations, setLocations] = useState([]);
   const [formData, setFormData] = useState({
@@ -12,6 +12,7 @@ function Hero({ setFilteredRooms }) {
     date: ""
   });
 
+  // Fetch rooms on component mount
   useEffect(() => {
     const fetchRooms = async () => {
       try {
@@ -30,12 +31,8 @@ function Hero({ setFilteredRooms }) {
     fetchRooms();
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSearch = (e) => {
+  // Handle search with glow effect
+  const handleSearch = useCallback((e) => {
     e.preventDefault();
     if (!formData.location && !formData.destination) {
       alert("Please select a location or a room type!");
@@ -43,17 +40,59 @@ function Hero({ setFilteredRooms }) {
     }
 
     let results = allRooms;
+    let selectedRoom = null;
+    
     if (formData.location) {
       results = results.filter(room => room.location === formData.location);
     }
     if (formData.destination) {
       results = results.filter(room => room.name === formData.destination);
+      // Find the specific selected room for highlighting
+      selectedRoom = allRooms.find(room => room.name === formData.destination);
     }
 
+    // Pass filtered results to parent component
     if (setFilteredRooms) setFilteredRooms(results);
+    
+    // Sets the selected room ID for highlighting
+    if (selectedRoom && setSelectedRoomId) {
+      setSelectedRoomId(selectedRoom._id);
+    }
 
+    // Scroll to hotels section
     const roomsSection = document.getElementById("hotels");
-    if (roomsSection) roomsSection.scrollIntoView({ behavior: "smooth" });
+    if (roomsSection) {
+      roomsSection.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Additional glow effect for room cards (fallback)
+    const searchTerm = formData.destination;
+    if (searchTerm) {
+      setTimeout(() => {
+        // Targets both possible class names for room cards
+        const roomCards = document.querySelectorAll('.hotel-card, .room-card, .room-row'); 
+        
+        roomCards.forEach((card) => {
+          const cardText = card.innerText.toLowerCase();
+          const searchLower = searchTerm.toLowerCase();
+          
+          if (cardText.includes(searchLower)) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.classList.add('highlighted-room');
+            
+            // Removes highlight after 3 seconds
+            setTimeout(() => {
+              card.classList.remove('highlighted-room');
+            }, 3000);
+          }
+        });
+      }, 800); 
+    }
+  }, [allRooms, formData, setFilteredRooms, setSelectedRoomId]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -92,7 +131,7 @@ function Hero({ setFilteredRooms }) {
         </div>
       </section>
 
-      {/* --- New About Section --- */}
+      {/* About Section */}
       <section className="hero-about" id="about">
         <div className="about-container">
           <div className="about-info">

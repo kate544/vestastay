@@ -42,7 +42,7 @@ const AdminLayout = ({ onLogout, bookings, setBookings, rooms, setRooms, role })
         return <RoomManagement rooms={rooms} setRooms={setRooms} role={role} />;
       
       case 'bookings':
-        // Correctly passing all props to Bookings component
+        // Correctly passes all props to Bookings component
         return (
           <Bookings 
             bookings={bookings} 

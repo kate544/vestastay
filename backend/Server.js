@@ -34,7 +34,7 @@ const getAccessToken = async () => {
         console.log("✅ Vesta Handshake: SUCCESS!");
         return response.data.access_token;
     } catch (error) {
-        // This will print the exact reason Safaricom is giving a 400
+        // This prints the exact reason Safaricom is giving a 400
         console.error("❌ Handshake Failed:", error.response?.data || error.message);
         return null;
     }

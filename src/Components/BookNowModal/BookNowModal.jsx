@@ -10,7 +10,7 @@ function BookNowModal({ hotel, onClose, onConfirm, viewOnly }) {
   });
 
   const [success, setSuccess] = useState(false);
-  const [finalTotal, setFinalTotal] = useState(0); // This is what ESLint was flagging
+  const [finalTotal, setFinalTotal] = useState(0); 
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [activePayment, setActivePayment] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -54,7 +54,7 @@ function BookNowModal({ hotel, onClose, onConfirm, viewOnly }) {
 
       if (response.ok) {
         onConfirm(); 
-        setFinalTotal(currentTotal); // Setting the state here
+        setFinalTotal(currentTotal); 
         setSuccess(true);
         return true;
       } else {
@@ -70,7 +70,7 @@ function BookNowModal({ hotel, onClose, onConfirm, viewOnly }) {
 
   const handlePaymentSuccess = async () => {
     setPaymentSuccess(true); 
-    return true;
+    return await saveBookingToDatabase();
   };
 
   const handleChange = (e) => {
@@ -88,8 +88,46 @@ function BookNowModal({ hotel, onClose, onConfirm, viewOnly }) {
       <div className="modal-content vesta-theme">
         {!success ? (
           <>
-            <h2 className="modal-title">{viewOnly ? "Details" : `Book ${hotel.name}`}</h2>
-            {!viewOnly ? (
+            <h2 className="modal-title">{viewOnly ? "Room Details" : `Book ${hotel.name}`}</h2>
+            
+            {viewOnly ? (
+              <div className="view-details-content">
+                <div className="detail-image-wrapper">
+                  <img src={hotel.img || hotel.image} alt={hotel.name} className="detail-img" style={{ width: '90%', borderRadius: '8px', marginBottom: '25px' }} />
+                </div>
+                <div className="detail-info">
+                  {/*Location Line using data rom the Admin Portal*/}
+                 <p style={{ fontSize: '16px', marginBottom: '10px' }}>
+    📍 <b>Location:</b> {hotel.location || "Not Specified"}
+  </p>
+                  {/* --- STATUS DOT  --- */}
+                  <p style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <b>Category:</b> {hotel.type} 
+                    <span style={{ 
+                      height: '10px', 
+                      fontSize: '10px',
+                      width: '10px', 
+                      backgroundColor: hotel.available ? '#28a745' : '#dc3545', 
+                      borderRadius: '50%', 
+                      display: 'inline-block',
+                      marginLeft: '5px'
+                    }}></span>
+                    <span style={{ fontSize: '15px', color: hotel.available ? '#28a745' : '#dc3545' }}>
+                      {hotel.available ? "Available" : "Sold Out"}
+                    </span>
+                  </p>
+                  
+                  <p><b>Included:</b> {hotel.beds}</p>
+                  <p><b>Rate:</b> KES {hotel.price} / night</p>
+                <p style={{ marginTop: '20px', color: '#555' }}>
+        Welcome to VestaStay. This property offers premium comfort and dedicated service to ensure your stay is memorable.
+      </p>
+                </div>
+                <div className="vesta-actions">
+                  <button type="button" onClick={onClose} className="close-btn-flat">Back to Gallery</button>
+                </div>
+              </div>
+            ) : (
               <form className="booking-form">
                 <label>Full Name*</label>
                 <input name="name" value={form.name} onChange={handleChange} required />
@@ -115,6 +153,21 @@ function BookNowModal({ hotel, onClose, onConfirm, viewOnly }) {
                     <input type="date" name="checkOut" value={form.checkOut} onChange={handleChange} />
                   </div>
                 </div>
+<div className="form-row">
+  <div className="form-group">
+    <label>Number of Guests*</label>
+    <input 
+      type="number" 
+      name="guests" 
+      min="1" 
+      max="10" 
+      value={form.guests} 
+      onChange={handleChange} 
+      required 
+    />
+  </div>
+</div>
+
 
                 <div className="price-summary">
                   <p>Total: <b>KES {currentTotal.toLocaleString()}</b></p>
@@ -127,10 +180,9 @@ function BookNowModal({ hotel, onClose, onConfirm, viewOnly }) {
                   <button type="button" onClick={onClose} className="close-btn-flat">Close</button>
                 </div>
               </form>
-            ) : <button onClick={onClose}>Back</button>}
+            )}
           </>
         ) : (
-          /* SUCCESS SCREEN: Using finalTotal here solves the ESLint warning */
           <div className="success-message">
             <div className="success-icon">✅</div>
             <h3>Booking Confirmed!</h3>
@@ -155,7 +207,6 @@ function BookNowModal({ hotel, onClose, onConfirm, viewOnly }) {
           </div>
         )}
 
-        {/* Payment Overlays */}
         {showPaymentOptions && !activePayment && (
           <div className="payment-selection-overlay">
             <div className="payment-selection-card">
@@ -179,9 +230,12 @@ function BookNowModal({ hotel, onClose, onConfirm, viewOnly }) {
                 />
               ) : (
                 <MpesaPayment 
-                  initialPhone={form.phone} initialAmount={currentTotal}
+                  initialPhone={form.phone} 
+                  initialAmount={currentTotal}
+                  hotelName={hotel.name}
+                  guestName={form.name}
+                  email={form.email}
                   onSuccess={handlePaymentSuccess} 
-                  onConfirmBooking={saveBookingToDatabase}
                   onClose={onClose}
                 />
               )}

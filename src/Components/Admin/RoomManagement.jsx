@@ -12,7 +12,8 @@ const RoomManagement = ({ role }) => {
     price: '',
     quantity: 1,
     details: '',
-    image: null
+    image: null,
+    numofGuests: 1
   });
 
   const API_URL = 'http://localhost:7000/api/rooms';
@@ -62,6 +63,7 @@ const RoomManagement = ({ role }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+     console.log(`Field changed: ${name} = ${value}`);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -86,7 +88,8 @@ const RoomManagement = ({ role }) => {
       price: '', 
       quantity: 1, 
       details: 'Free Wifi • Breakfast & Dinner Included', 
-      image: null 
+      image: null, 
+      numofGuests: 1
     });
     setIsModalOpen(true);
   };
@@ -99,8 +102,9 @@ const RoomManagement = ({ role }) => {
       type: room.type,
       price: room.price,
       quantity: room.quantity || 1,
-      details: room.details || '', 
-      image: room.image
+      details: room.details || '',
+      image: room.image,
+      numofGuests: room.numofGuests || 1 // FIXED: Added this line
     });
     setIsModalOpen(true);
   };
@@ -109,24 +113,41 @@ const RoomManagement = ({ role }) => {
     e.preventDefault();
     const method = editingRoomId ? 'PUT' : 'POST';
     const url = editingRoomId ? `${API_URL}/${editingRoomId}` : API_URL;
+    
+    // Create a clean data object with ALL required fields
+    const roomData = {
+      name: formData.name,
+      location: formData.location,
+      type: formData.type,
+      price: Number(formData.price),
+      quantity: Number(formData.quantity),
+      details: formData.details,
+      numofGuests: Number(formData.numofGuests), // Make sure this is included
+      status: formData.status || 'Available',
+      image: formData.image || null
+    };
+
+   console.log("Sending data to backend:", roomData); // Check if location appears here
 
     try {
       const response = await fetch(url, {
         method: method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          price: Number(formData.price),
-          quantity: Number(formData.quantity)
-        }),
+        body: JSON.stringify(roomData),
       });
 
       if (response.ok) {
         setIsModalOpen(false);
         fetchRooms();
+        alert(editingRoomId ? "Room updated successfully!" : "Room added successfully!");
+      } else {
+        const errorData = await response.json();
+        console.error("Server rejected data:", errorData);
+        alert(`Error: ${errorData.message || errorData.error || 'Check your inputs'}`);
       }
     } catch (err) {
       console.error("Error saving room:", err);
+      alert("Network error. Check if backend is running.");
     }
   };
 
@@ -142,16 +163,27 @@ const RoomManagement = ({ role }) => {
   };
 
   const toggleStatus = async (room) => {
-    const nextStatus = room.status === 'Available' ? 'Cleaning' : 'Available';
+    const newStatus = room.status === 'Available' ? 'Cleaning' : 'Available';
+    const originalRooms = [...rooms];
+    setRooms(rooms.map(r => r._id === room._id ? { ...r, status: newStatus } : r));
+
     try {
-      await fetch(`${API_URL}/${room._id}`, {
+      const response = await fetch(`${API_URL}/${room._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...room, status: nextStatus }),
+        body: JSON.stringify({ 
+          ...room,
+          status: newStatus 
+        }),
       });
-      fetchRooms();
+
+      if (!response.ok) {
+        throw new Error("Server rejected the update");
+      }
     } catch (err) {
-      console.error("Error toggling status:", err);
+      console.error("Toggle failed:", err);
+      setRooms(originalRooms);
+      alert("Database update failed. Check if your Backend is running.");
     }
   };
 
@@ -201,6 +233,21 @@ const RoomManagement = ({ role }) => {
                 </div>
               </div>
 
+              {/* Number of Guests - Only once! */}
+              <div className="form-group">
+                <label>Number of Guests</label>
+                <input 
+                  type="number" 
+                  name="numofGuests" 
+                  value={formData.numofGuests} 
+                  onChange={handleInputChange} 
+                  required 
+                  min="1"
+                  max="10"
+                  placeholder="Maximum guests allowed"
+                />
+              </div>
+
               <div className="form-group">
                 <label>Amenities & Details</label>
                 <textarea name="details" value={formData.details} onChange={handleInputChange} rows="2" />
@@ -244,7 +291,9 @@ const RoomManagement = ({ role }) => {
                 <div style={{ fontWeight: 'bold' }}>{room.name}</div>
                 <div style={{ fontSize: '0.8rem', color: '#666' }}>{room.details}</div>
               </td>
-              <td style={{ fontWeight: '500' }}>{room.location || 'N/A'}</td>
+              <td style={{ fontWeight: '500' }}>
+  {room.location || room.city || room.hotelLocation || room.area || 'N/A'}
+</td>
               <td>{room.type}</td>
               <td>{room.price?.toLocaleString()}</td>
               <td style={{ color: room.quantity < 3 ? 'red' : 'green', fontWeight: 'bold' }}>
