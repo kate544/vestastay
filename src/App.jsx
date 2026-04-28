@@ -36,7 +36,7 @@ const App = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await fetch('http://localhost:7000/api/bookings');
+        const response = await fetch('https://vestastay.onrender.com/api/bookings');
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
         setBookings(data);
@@ -81,7 +81,7 @@ const App = () => {
 
       console.log("🔍 DATABASE CHECK: Sending this to server:", payload);
 
-      const response = await fetch('http://localhost:7000/api/bookings', {
+      const response = await fetch('https://vestastay.onrender.com/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

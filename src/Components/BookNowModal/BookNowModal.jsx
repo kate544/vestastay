@@ -46,7 +46,7 @@ function BookNowModal({ hotel, onClose, onConfirm, viewOnly }) {
     };
 
     try {
-      const response = await fetch("http://localhost:7000/api/bookings", {
+      const response = await fetch("https://vestastay.onrender.com/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newBooking),

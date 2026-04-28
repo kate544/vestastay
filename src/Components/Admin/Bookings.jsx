@@ -3,7 +3,7 @@ import './Bookings.css';
 
 const Bookings = ({ bookings, setBookings, setRooms, role }) => {
   // Base URL for the bookings API
-  const API_BASE_URL = 'http://localhost:7000/api/bookings';
+  const API_BASE_URL = 'https://vestastay.onrender.com/api/bookings';
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -53,7 +53,7 @@ const Bookings = ({ bookings, setBookings, setRooms, role }) => {
       // Handle room status updates if checked out
       if (newStatus === 'Checked Out') {
         // Ensure your backend has a /api/rooms route if using this
-        await fetch(`http://localhost:7000/api/rooms/${roomName}`, {
+        await fetch(`https://vestastay.onrender.com/api/rooms/${roomName}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ status: 'Dirty' })

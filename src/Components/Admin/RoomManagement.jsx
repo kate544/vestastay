@@ -16,7 +16,7 @@ const RoomManagement = ({ role }) => {
     numofGuests: 1
   });
 
-  const API_URL = 'http://localhost:7000/api/rooms';
+  const API_URL = 'https://vestastay.onrender.com/api/rooms';
 
   useEffect(() => {
     fetchRooms();

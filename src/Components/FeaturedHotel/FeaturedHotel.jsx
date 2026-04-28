@@ -15,7 +15,7 @@ const FeaturedHotel = ({ filteredRooms, selectedRoomId, setSelectedRoomId, onCle
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await axios.get("http://localhost:7000/api/rooms");
+        const response = await axios.get("https://vestastay.onrender.com/api/rooms");
         const formattedRooms = response.data.map(room => ({
           id: room._id,
           name: room.name,
