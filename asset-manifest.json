@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/VestaStay/static/css/main.ac3b6140.css",
-    "main.js": "/VestaStay/static/js/main.28684304.js",
+    "main.js": "/VestaStay/static/js/main.0843d326.js",
     "static/js/453.64a42c55.chunk.js": "/VestaStay/static/js/453.64a42c55.chunk.js",
     "static/media/VestaStay-img-2.jpeg": "/VestaStay/static/media/VestaStay-img-2.2c932818f28350588015.jpeg",
     "index.html": "/VestaStay/index.html",
     "main.ac3b6140.css.map": "/VestaStay/static/css/main.ac3b6140.css.map",
-    "main.28684304.js.map": "/VestaStay/static/js/main.28684304.js.map",
+    "main.0843d326.js.map": "/VestaStay/static/js/main.0843d326.js.map",
     "453.64a42c55.chunk.js.map": "/VestaStay/static/js/453.64a42c55.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ac3b6140.css",
-    "static/js/main.28684304.js"
+    "static/js/main.0843d326.js"
   ]
 }
